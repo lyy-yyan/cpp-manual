@@ -16,18 +16,22 @@ class complex
 public:
   // 初始化行为，若将re = r; im = i;写入{}中，则时赋值行为，效率比初始化行为低
   // 这种写法仅限构造函数 ~: re (r), im (i)
+  // 下面构造函数的参数传递为值传递，如果可以使用引用传递，请尽量使用，效率更高
   complex (double r = 0, double i = 0): re (r), im (i) { }
-  complex& operator += (const complex&);
+  complex& operator += (const complex&);  // 参数为引用传递
   complex& operator -= (const complex&);
   complex& operator *= (const complex&);
   complex& operator /= (const complex&);
   // 即使是写在body内部的函数也不一定被编译为inline函数，太复杂的函数就不会
+  // 常量成员函数：该函数不会改变数据内容
+  // 对于一个变量或者是一个函数，如果确保它的值不会改变，尽量添加const关键字修饰
   double real () const { return re; }
   double imag () const { return im; }
 private:
     double re, im;
     // 可以使用模板声明就可在创建对象时灵活使用数据类型 T re, im; complex<int> c2(1, 6);
 
+  // friend关键字修饰友元函数，表示该函数可以自由直接地获取private成员
   friend complex& __doapl (complex *, const complex&);
   friend complex& __doami (complex *, const complex&);
   friend complex& __doaml (complex *, const complex&);
