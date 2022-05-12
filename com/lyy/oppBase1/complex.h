@@ -207,6 +207,7 @@ operator != (double x, const complex& y)
 }
 
 // new add 可以重载输出操作符 <<
+// 对于类似 << 这类的操作符重载函数不能作为成员函数
 # include <iostream>
 ostream& 
 operator << (ostream& os, const complex& x)
