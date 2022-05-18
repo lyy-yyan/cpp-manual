@@ -42,6 +42,7 @@ private:
 
 // 类的定义
 // inline指内敛函数，要求编译器尽量将该函数编译为内敛函数，仅是尽量
+// +=
 inline complex&                             // 返回值以引用形式接收
 __doapl (complex* ths, const complex& r)
 {
@@ -56,6 +57,7 @@ complex::operator += (const complex& r)     // ::即成员函数未在类内部�
   return __doapl (this, r);                 // 哪个对象调用这个函数，this就是那个对象
 }
 
+ // -=
 inline complex&
 __doami (complex* ths, const complex& r)
 {
@@ -70,6 +72,7 @@ complex::operator -= (const complex& r)
   return __doami (this, r);
 }
  
+//  *=
 inline complex&
 __doaml (complex* ths, const complex& r)
 {
@@ -85,18 +88,21 @@ complex::operator *= (const complex& r)
   return __doaml (this, r);
 }
  
+//  获得虚部
 inline double
 imag (const complex& x)
 {
   return x.imag ();
 }
 
+// 获得实部
 inline double
 real (const complex& x)
 {
   return x.real ();
 }
 
+// 几种复数相加减乘除的情况
 inline complex                                                // 这里无法返回引用类型，因为函数返回的是一个局部变量
 operator + (const complex& x, const complex& y)
 {
@@ -158,18 +164,21 @@ operator / (const complex& x, double y)
   return complex (real (x) / y, imag (x) / y);
 }
 
+// +x
 inline complex      // 此行可以修改为inline complex&，效率更高，此处的x并非局部变量，可用引用返回
 operator + (const complex& x)
 {
   return x;
 }
 
+// -x
 inline complex
 operator - (const complex& x)
 {
   return complex (-real (x), -imag (x));
 }
 
+// 重载==
 inline bool
 operator == (const complex& x, const complex& y)
 {
@@ -188,6 +197,7 @@ operator == (double x, const complex& y)
   return x == real (y) && imag (y) == 0;
 }
 
+// 重载!=
 inline bool
 operator != (const complex& x, const complex& y)
 {
@@ -206,17 +216,8 @@ operator != (double x, const complex& y)
   return x != real (y) || imag (y) != 0;
 }
 
-// new add 可以重载输出操作符 <<
-// 对于类似 << 这类的操作符重载函数不能作为成员函数
-# include <iostream>
-ostream& 
-operator << (ostream& os, const complex& x)
-{
-  return os << '(' << real(x) << ', ' << imag(x) << ')';
-}
-
 #include <cmath>
-
+// 关于复数的一些数学计算方法
 inline complex
 polar (double r, double t)
 {
